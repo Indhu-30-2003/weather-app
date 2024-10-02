@@ -10,6 +10,7 @@ import mist from "./assests/mist.jpg"
 import { useState } from "react";
 import axios from "axios";
 import tempo from "./assests/tempo.jpg"
+import haze from "./assests/haze.jpg"
 function App() {
   const [city, setCity] = useState("");
   const [humidity1, setHumidity] = useState("");
@@ -63,6 +64,9 @@ function App() {
     case "mist":
             setWeatherImg(mist);
             break;
+    case "haze":
+                setWeatherImg(haze);
+                break;
       default:
         setWeatherImg(weatherBackground); 
         break;
@@ -72,6 +76,7 @@ function App() {
   return (
     <>
       <div className="card">
+        <h1>Weather Report</h1>
         <div className="search">
           <input
             type="text"
@@ -87,7 +92,7 @@ function App() {
         </div>
         <div className="weather">
           <img className="weatherimg" src={weatherImg} alt="weather icon" /> 
-          <h1 className="temp">{temperature} °C</h1>
+          {/* <h1 className="temp">{temperature} °C</h1> */}
           <h2 className="city">{city.toUpperCase()}</h2>
           <h2 className="weatherCondition">Weather :{weatherCondition}</h2> 
         </div>
