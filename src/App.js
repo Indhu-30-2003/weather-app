@@ -2,22 +2,23 @@ import humidityImg from "./assests/humidity.png";
 import cloudy from "./assests/cloudy.jpg";
 import rainy from "./assests/rainy.jpg";
 import weatherBackground from "./assests/weather background.jpg";
-import stromy from "./assests/stromy.jpg";
+import stormy from "./assests/stromy.jpg";
 import sunny from "./assests/sunny.jpg";
 import windImg from "./assests/wind.png";
 import windy from "./assests/windy.jpg";
-import mist from "./assests/mist.jpg"
-import { useState } from "react";
+import mist from "./assests/mist.jpg";
+import haze from "./assests/haze.jpg";
+import tempo from "./assests/tempo.jpg";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import tempo from "./assests/tempo.jpg"
-import haze from "./assests/haze.jpg"
+
 function App() {
   const [city, setCity] = useState("");
   const [humidity1, setHumidity] = useState("");
   const [temperature, setTemperature] = useState("");
   const [windSpeed, setWindSpeed] = useState("");
   const [weatherCondition, setWeatherCondition] = useState(""); 
-  const [weatherImg, setWeatherImg] = useState(tempo );  
+  const [weatherImg, setWeatherImg] = useState(tempo);  
 
   function handleCity(evt) {
     setCity(evt.target.value);
@@ -32,8 +33,6 @@ function App() {
         setWindSpeed(success.data.wind.speed);
         setTemperature(success.data.main.temp);
         setWeatherCondition(success.data.weather[0].main); 
-
-       
         updateWeatherImg(success.data.weather[0].main);
       })
       .catch(function (error) {
@@ -41,7 +40,6 @@ function App() {
       });
   }
 
- 
   function updateWeatherImg(weatherCondition) {
     switch (weatherCondition.toLowerCase()) {
       case "rain":
@@ -52,7 +50,7 @@ function App() {
         break;
       case "storm":
       case "thunderstorm":
-        setWeatherImg(stromy);
+        setWeatherImg(stormy);
         break;
       case "clear":
         setWeatherImg(sunny);
@@ -61,17 +59,25 @@ function App() {
       case "breeze":
         setWeatherImg(windy);
         break;
-    case "mist":
-            setWeatherImg(mist);
-            break;
-    case "haze":
-                setWeatherImg(haze);
-                break;
+      case "mist":
+        setWeatherImg(mist);
+        break;
+      case "haze":
+        setWeatherImg(haze);
+        break;
       default:
         setWeatherImg(weatherBackground); 
         break;
     }
   }
+
+  useEffect(() => {
+    const imageSources = [rainy, cloudy, sunny, stormy, windy, mist, haze, weatherBackground];
+    imageSources.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   return (
     <>
@@ -91,21 +97,20 @@ function App() {
           </button>
         </div>
         <div className="weather">
-          <img className="weatherimg" src={weatherImg} alt="weather icon" /> 
-          {/* <h1 className="temp">{temperature} °C</h1> */}
+          <img className="weatherimg" src={weatherImg} alt="weather icon" loading="lazy" /> 
           <h2 className="city">{city.toUpperCase()}</h2>
-          <h2 className="weatherCondition">Weather :{weatherCondition}</h2> 
+          <h2 className="weatherCondition">Weather : {weatherCondition}</h2> 
         </div>
         <div className="details">
           <div className="col1">
-            <img src={humidityImg} className="humidity" alt="humidity icon" />
+            <img src={humidityImg} className="humidity" alt="humidity icon" loading="lazy" />
             <div>
               <p className="humidity_para">{humidity1}%</p>
               <p>Humidity</p>
             </div>
           </div>
           <div className="col1">
-            <img src={windImg} className="humidity" alt="wind icon" />
+            <img src={windImg} className="humidity" alt="wind icon" loading="lazy" />
             <div>
               <p className="wind_para">{windSpeed} km/h</p>
               <p>Wind Speed</p>
